@@ -303,9 +303,14 @@ bool MitsubishiClimate::on_receive(remote_base::RemoteReceiveData data) {
     }
   }
   
-  if (!data.expect_space(MITSUBISHI_MID_GAP)) {
-    ESP_LOGV(TAG, "expect space fail");
-    //return false;
+  for (uint8_t x = 0; x < 128; x++) {
+    if (!data.expect_item(MITSUBISHI_HEADER_MARK, MITSUBISHI_HEADER_SPACE)) {
+      ESP_LOGV(TAG, "Header fail");
+      #return false;
+    } else {
+      ESP_LOGV(TAG, "Header found");
+      break;
+    }
   }
 
   for (uint8_t pos = 5; pos < 18; pos++) {
