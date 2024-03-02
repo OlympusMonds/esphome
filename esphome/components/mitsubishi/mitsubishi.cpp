@@ -305,7 +305,7 @@ bool MitsubishiClimate::on_receive(remote_base::RemoteReceiveData data) {
   
   if (!data.expect_space(MITSUBISHI_MID_GAP)) {
     ESP_LOGV(TAG, "expect space fail");
-    return false;
+    //return false;
   }
 
   for (uint8_t pos = 5; pos < 18; pos++) {
