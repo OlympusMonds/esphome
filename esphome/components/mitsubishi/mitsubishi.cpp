@@ -303,12 +303,12 @@ bool MitsubishiClimate::on_receive(remote_base::RemoteReceiveData data) {
     }
   }
   
-  if (!data.expect_item(MITSUBISHI_MID_GAP, MITSUBISHI_HEADER_SPACE)) {
-    ESP_LOGV(TAG, "Header fail");
+  if (!data.expect_space(MITSUBISHI_MID_GAP)) {
+    ESP_LOGV(TAG, "expect space fail");
     return false;
   }
 
-  for (uint8_t pos = 6; pos < 18; pos++) {
+  for (uint8_t pos = 5; pos < 18; pos++) {
     uint8_t byte = 0;
     for (int8_t bit = 0; bit < 8; bit++) {
       ESP_LOGV(TAG, "Byte %02X", byte);
