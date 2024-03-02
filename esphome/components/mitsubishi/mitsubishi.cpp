@@ -289,6 +289,7 @@ bool MitsubishiClimate::on_receive(remote_base::RemoteReceiveData data) {
         return false;
       }
     }
+    ESP_LOGV(TAG, "Byte %d: %02X", pos, byte);
     state_frame[pos] = byte;
 
     // Check Header && Footer
