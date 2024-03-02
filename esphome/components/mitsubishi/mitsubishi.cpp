@@ -278,7 +278,36 @@ bool MitsubishiClimate::on_receive(remote_base::RemoteReceiveData data) {
     return false;
   }
 
-  for (uint8_t pos = 0; pos < 18; pos++) {
+  for (uint8_t pos = 0; pos < 4; pos++) {
+    uint8_t byte = 0;
+    for (int8_t bit = 0; bit < 8; bit++) {
+      ESP_LOGV(TAG, "Byte %02X", byte);
+      if (data.expect_item(MITSUBISHI_BIT_MARK, MITSUBISHI_ONE_SPACE)) {
+        byte |= 1 << bit;
+      } else if (!data.expect_item(MITSUBISHI_BIT_MARK, MITSUBISHI_ZERO_SPACE)) {
+        ESP_LOGV(TAG, "Byte %d bit %d fail", pos, bit);
+        return false;
+      }
+    }
+    ESP_LOGV(TAG, "Byte %d: %02X", pos, byte);
+    state_frame[pos] = byte;
+
+    // Check Header && Footer
+    if ((pos == 0 && byte != MITSUBISHI_BYTE00) || (pos == 1 && byte != MITSUBISHI_BYTE01) ||
+        (pos == 2 && byte != MITSUBISHI_BYTE02) || (pos == 3 && byte != MITSUBISHI_BYTE03) ||
+        (pos == 4 && byte != MITSUBISHI_BYTE04) || (pos == 13 && byte != MITSUBISHI_BYTE13) ||
+        (pos == 16 && byte != MITSUBISHI_BYTE16)) {
+      ESP_LOGV(TAG, "Bytes 0,1,2,3,4,13 or 16 fail - invalid value");
+      return false;
+    }
+  }
+  
+  if (!data.expect_item(MITSUBISHI_HEADER_MARK, MITSUBISHI_HEADER_SPACE)) {
+    ESP_LOGV(TAG, "Header fail");
+    return false;
+  }
+
+  for (uint8_t pos = 5; pos < 18; pos++) {
     uint8_t byte = 0;
     for (int8_t bit = 0; bit < 8; bit++) {
       ESP_LOGV(TAG, "Byte %02X", byte);
