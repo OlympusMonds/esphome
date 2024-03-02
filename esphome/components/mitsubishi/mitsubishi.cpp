@@ -307,6 +307,13 @@ bool MitsubishiClimate::on_receive(remote_base::RemoteReceiveData data) {
     ESP_LOGV(TAG, "mid gap fail");
     return false;
   }
+  ESP_LOGV(TAG, "found gap");
+  if (!data.expect_item(MITSUBISHI_HEADER_MARK, MITSUBISHI_HEADER_SPACE)) {
+    ESP_LOGV(TAG, "Header fail");
+    return false;
+  }
+  ESP_LOGV(TAG, "found 2nd header");
+
 
   for (uint8_t pos = 5; pos < 18; pos++) {
     uint8_t byte = 0;
