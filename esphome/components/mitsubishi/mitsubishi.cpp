@@ -302,9 +302,12 @@ bool MitsubishiClimate::on_receive(remote_base::RemoteReceiveData data) {
     }
   }
   
-  if (!data.expect_item(MITSUBISHI_HEADER_MARK, MITSUBISHI_HEADER_SPACE)) {
-    ESP_LOGV(TAG, "Header fail");
-    return false;
+  for (uint8_t x = 0; x < 5; x++) {
+    ESP_LOGV("Second header: %d", x);
+    if (!data.expect_item(MITSUBISHI_HEADER_MARK, MITSUBISHI_HEADER_SPACE)) {
+      ESP_LOGV(TAG, "Header fail");
+      return false;
+    }
   }
 
   for (uint8_t pos = 6; pos < 18; pos++) {
