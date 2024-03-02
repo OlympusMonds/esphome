@@ -281,6 +281,7 @@ bool MitsubishiClimate::on_receive(remote_base::RemoteReceiveData data) {
   for (uint8_t pos = 0; pos < 18; pos++) {
     uint8_t byte = 0;
     for (int8_t bit = 0; bit < 8; bit++) {
+      ESP_LOGV(TAG, "Byte %02X", byte);
       if (data.expect_item(MITSUBISHI_BIT_MARK, MITSUBISHI_ONE_SPACE)) {
         byte |= 1 << bit;
       } else if (!data.expect_item(MITSUBISHI_BIT_MARK, MITSUBISHI_ZERO_SPACE)) {
