@@ -39,6 +39,7 @@ const uint16_t MITSUBISHI_ZERO_SPACE = 390;
 const uint16_t MITSUBISHI_HEADER_MARK = 3500;
 const uint16_t MITSUBISHI_HEADER_SPACE = 1700;
 const uint16_t MITSUBISHI_MIN_GAP = 17500;
+const uint16_t MITSUBISHI_MID_GAP = 9000;
 
 // Marker bytes
 const uint8_t MITSUBISHI_BYTE00 = 0X23;
@@ -302,12 +303,9 @@ bool MitsubishiClimate::on_receive(remote_base::RemoteReceiveData data) {
     }
   }
   
-  for (uint8_t x = 0; x < 5; x++) {
-    ESP_LOGV(TAG, "Second header: %d", x);
-    if (!data.expect_item(MITSUBISHI_HEADER_MARK, MITSUBISHI_HEADER_SPACE)) {
-      ESP_LOGV(TAG, "Header fail");
-      return false;
-    }
+  if (!data.expect_item(MITSUBISHI_MID_GAP, MITSUBISHI_HEADER_SPACE)) {
+    ESP_LOGV(TAG, "Header fail");
+    return false;
   }
 
   for (uint8_t pos = 6; pos < 18; pos++) {
