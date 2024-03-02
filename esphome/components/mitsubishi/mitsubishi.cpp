@@ -306,7 +306,7 @@ bool MitsubishiClimate::on_receive(remote_base::RemoteReceiveData data) {
   for (uint8_t x = 0; x < 128; x++) {
     if (!data.expect_item(MITSUBISHI_HEADER_MARK, MITSUBISHI_HEADER_SPACE)) {
       ESP_LOGV(TAG, "Header fail");
-      #return false;
+      //return false;
     } else {
       ESP_LOGV(TAG, "Header found");
       break;
