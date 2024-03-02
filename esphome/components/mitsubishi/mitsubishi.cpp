@@ -39,7 +39,7 @@ const uint16_t MITSUBISHI_ZERO_SPACE = 390;
 const uint16_t MITSUBISHI_HEADER_MARK = 3500;
 const uint16_t MITSUBISHI_HEADER_SPACE = 1700;
 const uint16_t MITSUBISHI_MIN_GAP = 17500;
-const uint16_t MITSUBISHI_MID_GAP = 9080;
+const uint16_t MITSUBISHI_MID_GAP = 9050;
 
 // Marker bytes
 const uint8_t MITSUBISHI_BYTE00 = 0X23;
